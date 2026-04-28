@@ -5,15 +5,11 @@
 
   <style>
     body {
-      background: #000;
+      background: black;
       color: white;
       font-family: Arial;
       text-align: center;
       padding: 50px;
-    }
-
-    h1 {
-      margin-bottom: 40px;
     }
 
     input, select, button {
@@ -32,16 +28,6 @@
       cursor: pointer;
     }
 
-    button:hover {
-      background: #a000a0;
-    }
-
-    #output {
-      margin-top: 30px;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
     .box {
       background: #111;
       padding: 20px;
@@ -50,6 +36,11 @@
       width: 80%;
       max-width: 600px;
     }
+
+    audio, video {
+      width: 100%;
+      margin-top: 10px;
+    }
   </style>
 </head>
 
@@ -57,7 +48,7 @@
 
 <h1>Kompa One Click Studio</h1>
 
-<input id="topic" placeholder="Enter Topic (ex: lanmou, lavi, Ayiti)"><br>
+<input id="topic" placeholder="Enter Topic"><br>
 
 <select id="beat">
   <option>Romantic Kompa</option>
@@ -71,45 +62,45 @@
 <div id="output"></div>
 
 <script>
-function generate() {
+async function generate() {
 
   let topic = document.getElementById("topic").value;
   let beat = document.getElementById("beat").value;
 
-  if (topic.trim() === "") {
-    alert("⚠️ Please enter a topic");
+  if (!topic) {
+    alert("Enter a topic");
     return;
   }
 
-  // Build prompts
-  let musicPrompt =
-    "Haitian kompa song in Haitian Creole about " + topic +
-    ", " + beat +
-    ", male and female vocals, romantic, live band instruments, modern kompa style";
-
-  let videoPrompt =
-    "Haitian kompa band performing live, 5 male musicians and 1 female singer, song about " +
-    topic + ", " + beat +
-    ", cinematic lighting, studio performance, professional music video";
-
-  // Open MUSIC generator (Suno)
-  window.open(
-    "https://suno.com/create?prompt=" + encodeURIComponent(musicPrompt),
-    "_blank"
-  );
-
-  // Open VIDEO generator (Runway)
-  window.open(
-    "https://app.runwayml.com/",
-    "_blank"
-  );
-
-  // Show confirmation
   document.getElementById("output").innerHTML =
-    "<div class='box'>✅ Music + Video tools opened</div>" +
-    "<div class='box'>👉 Topic: <b>" + topic + "</b></div>" +
-    "<div class='box'>👉 Beat: <b>" + beat + "</b></div>" +
-    "<div class='box'>👉 Suno = generate music<br>👉 Runway = generate video</div>";
+    "<div class='box'>⏳ Creating your song + video...</div>";
+
+  try {
+
+    let res = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ topic, beat })
+    });
+
+    let data = await res.json();
+
+    document.getElementById("output").innerHTML =
+
+      "<div class='box'><b>🎤 Lyrics</b><br><br>" + data.lyrics + "</div>" +
+
+      "<div class='box'><b>🎵 Song</b><br>" +
+      "<audio controls src='" + data.musicUrl + "'></audio></div>" +
+
+      "<div class='box'><b>🎬 Video</b><br>" +
+      "<video controls src='" + data.videoUrl + "'></video></div>";
+
+  } catch (err) {
+    document.getElementById("output").innerHTML =
+      "<div class='box'>❌ Error connecting to server</div>";
+  }
 }
 </script>
 
