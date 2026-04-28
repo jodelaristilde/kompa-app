@@ -2,45 +2,23 @@
 <html>
 <head>
   <title>Kompa One Click Studio</title>
-
   <style>
-    body {
-      background: black;
-      color: white;
-      font-family: Arial;
-      text-align: center;
-      padding: 50px;
-    }
-
+    body { background:#000; color:#fff; font-family:Arial; text-align:center; padding:40px; }
+    h1 { margin-bottom:25px; }
     input, select, button {
-      padding: 15px;
-      margin: 10px;
-      width: 320px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
+      padding:14px; margin:10px; width:320px; border-radius:10px; border:none; font-size:16px;
     }
-
-    button {
-      background: purple;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
+    button { background:purple; color:#fff; font-weight:bold; cursor:pointer; }
+    .mode-btn { width:150px; }
+    .active { background:#ff00aa; }
     .box {
-      background: #111;
-      padding: 20px;
-      border-radius: 10px;
-      margin: 15px auto;
-      width: 80%;
-      max-width: 600px;
+      background:#111; padding:18px; border-radius:10px; margin:15px auto; width:85%; max-width:650px;
     }
-
-    audio, video {
-      width: 100%;
-      margin-top: 10px;
+    .link-btn {
+      display:block; margin-top:10px; padding:10px; background:#222; color:#fff; text-decoration:none; border-radius:8px;
     }
+    .link-btn:hover { background:#444; }
+    audio, video { width:100%; margin-top:10px; }
   </style>
 </head>
 
@@ -48,7 +26,15 @@
 
 <h1>Kompa One Click Studio</h1>
 
-<input id="topic" placeholder="Enter Topic"><br>
+<!-- MODE SWITCH -->
+<div>
+  <button id="proBtn" class="mode-btn active" onclick="setMode('pro')">🔥 PRO</button>
+  <button id="autoBtn" class="mode-btn" onclick="setMode('auto')">⚡ AUTO</button>
+</div>
+
+<br>
+
+<input id="topic" placeholder="Enter Topic (ex: lanmou, Ayiti)"><br>
 
 <select id="beat">
   <option>Romantic Kompa</option>
@@ -62,7 +48,17 @@
 <div id="output"></div>
 
 <script>
-async function generate() {
+let mode = "pro";
+
+function setMode(m) {
+  mode = m;
+  document.getElementById("proBtn").classList.remove("active");
+  document.getElementById("autoBtn").classList.remove("active");
+  document.getElementById(m + "Btn").classList.add("active");
+}
+
+// MAIN FUNCTION
+function generate() {
 
   let topic = document.getElementById("topic").value;
   let beat = document.getElementById("beat").value;
@@ -72,34 +68,71 @@ async function generate() {
     return;
   }
 
-  document.getElementById("output").innerHTML =
-    "<div class='box'>⏳ Creating your song + video...</div>";
+  // =========================
+  // 🔥 PRO MODE (BEST QUALITY)
+  // =========================
+  if (mode === "pro") {
 
-  try {
+    let lyrics =
+`(Verse)
+Mwen sonje ${topic}
+Nan kè mwen li toujou la
+${beat} ap jwe dousman
+Lanmou pa janm fini
 
-    let res = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ topic, beat })
-    });
+(Chorus)
+Ayiti nan kè mwen
+Mwen pap janm bliye
+Nou ansanm pou lavi
+Lanmou pap janm fini`;
 
-    let data = await res.json();
+    let musicPrompt =
+"Haitian kompa song in Haitian Creole about " + topic +
+", " + beat +
+", male and female vocals, smooth groove, guitar, bass, keyboard, drums, live band, modern kompa, emotional, danceable";
+
+    let videoPrompt =
+"Haitian kompa band performing live, 5 male musicians and 1 female singer, song about " +
+topic + ", " + beat +
+", warm lighting, studio stage, cinematic music video";
 
     document.getElementById("output").innerHTML =
 
-      "<div class='box'><b>🎤 Lyrics</b><br><br>" + data.lyrics + "</div>" +
+      "<div class='box'><b>🎤 Lyrics</b><br><br>" + lyrics + "</div>" +
 
-      "<div class='box'><b>🎵 Song</b><br>" +
-      "<audio controls src='" + data.musicUrl + "'></audio></div>" +
+      "<div class='box'><b>🎵 Music (Best Quality)</b><br>" +
+      musicPrompt +
+      "<a class='link-btn' target='_blank' href='https://suno.com'>👉 Open Suno</a></div>" +
 
       "<div class='box'><b>🎬 Video</b><br>" +
-      "<video controls src='" + data.videoUrl + "'></video></div>";
+      videoPrompt +
+      "<a class='link-btn' target='_blank' href='https://app.runwayml.com'>👉 Open Runway</a></div>";
 
-  } catch (err) {
+  }
+
+  // =========================
+  // ⚡ AUTO MODE (FAKE DEMO)
+  // =========================
+  else {
+
     document.getElementById("output").innerHTML =
-      "<div class='box'>❌ Error connecting to server</div>";
+      "<div class='box'>⏳ Generating automatically...</div>";
+
+    setTimeout(() => {
+
+      document.getElementById("output").innerHTML =
+
+        "<div class='box'><b>🎤 Lyrics</b><br><br>Auto generated song about " + topic + "</div>" +
+
+        "<div class='box'><b>🎵 Song</b><br>" +
+        "<audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio></div>" +
+
+        "<div class='box'><b>🎬 Video</b><br>" +
+        "<video controls src='https://www.w3schools.com/html/mov_bbb.mp4'></video></div>" +
+
+        "<div class='box'>⚠️ AUTO MODE = demo only (not real kompa)</div>";
+
+    }, 1500);
   }
 }
 </script>
