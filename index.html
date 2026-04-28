@@ -1,27 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Kompa One Click</title>
+  <title>Kompa One Click Studio</title>
+
   <style>
     body {
-      background: black;
+      background: #000;
       color: white;
       font-family: Arial;
       text-align: center;
       padding: 50px;
     }
-    input, select, button {
-      padding: 10px;
-      margin: 10px;
-      width: 300px;
-      border-radius: 8px;
-      border: none;
+
+    h1 {
+      margin-bottom: 40px;
     }
+
+    input, select, button {
+      padding: 15px;
+      margin: 10px;
+      width: 320px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+
     button {
       background: purple;
       color: white;
       font-weight: bold;
       cursor: pointer;
+    }
+
+    button:hover {
+      background: #a000a0;
+    }
+
+    #output {
+      margin-top: 30px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .box {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 15px auto;
+      width: 80%;
+      max-width: 600px;
     }
   </style>
 </head>
@@ -30,7 +57,7 @@
 
 <h1>Kompa One Click Studio</h1>
 
-<input id="topic" placeholder="Enter Topic"><br>
+<input id="topic" placeholder="Enter Topic (ex: lanmou, lavi, Ayiti)"><br>
 
 <select id="beat">
   <option>Romantic Kompa</option>
@@ -41,19 +68,39 @@
 
 <button onclick="generate()">Create Song + Video</button>
 
-<p id="output"></p>
+<div id="output"></div>
 
 <script>
 function generate() {
+
   let topic = document.getElementById("topic").value;
   let beat = document.getElementById("beat").value;
 
-  let musicPrompt = `Haitian kompa song in Haitian Creole about ${topic}, ${beat}, male and female vocals, live band, modern kompa`;
+  if(topic === "") {
+    document.getElementById("output").innerHTML = "⚠️ Please enter a topic";
+    return;
+  }
 
-  let videoPrompt = `Haitian kompa band performing, 5 male musicians and 1 female singer, song about ${topic}, ${beat}, cinematic lighting, studio performance`;
+  let musicPrompt =
+  "Haitian kompa song in Haitian Creole about " + topic +
+  ", " + beat +
+  ", male and female vocals, romantic, live band instruments, modern kompa style";
+
+  let videoPrompt =
+  "Haitian kompa band performing live, 5 male musicians and 1 female singer, song about " +
+  topic +
+  ", " + beat +
+  ", cinematic lighting, studio performance, professional music video";
 
   document.getElementById("output").innerHTML =
-    "<b>🎵 MUSIC PROMPT:</b><br>" + musicPrompt +
-    "<br><br><b>🎬 VIDEO PROMPT:</b><br>" + videoPrompt +
-    "<br><br>👉 Copy these into AI tools (next step I will automate it)";
+
+  "<div class='box'><b>🎵 MUSIC PROMPT</b><br><br>" + musicPrompt + "</div>" +
+
+  "<div class='box'><b>🎬 VIDEO PROMPT</b><br><br>" + videoPrompt + "</div>" +
+
+  "<div class='box'>👉 Copy these into AI tools (next step = full automation)</div>";
 }
+</script>
+
+</body>
+</html>
