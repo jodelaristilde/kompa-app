@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kompa One Click</title>
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+      padding: 50px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      width: 300px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background: purple;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Kompa One Click Studio</h1>
+
+<input id="topic" placeholder="Enter Topic"><br>
+
+<select id="beat">
+  <option>Romantic Kompa</option>
+  <option>Party Kompa</option>
+  <option>Gospel Kompa</option>
+  <option>Carnival Kompa</option>
+</select><br>
+
+<button onclick="generate()">Create Song + Video</button>
+
+<p id="output"></p>
+
+<script>
+function generate() {
+  let topic = document.getElementById("topic").value;
+  let beat = document.getElementById("beat").value;
+
+  document.getElementById("output").innerHTML =
+    "Creating Kompa song and video about: " + topic +
+    "<br>Beat: " + beat +
+    "<br><br>👉 Next step: connect AI APIs (I will help you)";
+}
+</script>
+
+</body>
+</html>
