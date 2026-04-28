@@ -1,3 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kompa One Click Studio</title>
+
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+    }
+
+    input, select, button {
+      padding: 15px;
+      margin: 10px;
+      width: 320px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      background: purple;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #a000a0;
+    }
+
+    #output {
+      margin-top: 30px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .box {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 15px auto;
+      width: 80%;
+      max-width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Kompa One Click Studio</h1>
+
+<input id="topic" placeholder="Enter Topic (ex: lanmou, lavi, Ayiti)"><br>
+
+<select id="beat">
+  <option>Romantic Kompa</option>
+  <option>Party Kompa</option>
+  <option>Gospel Kompa</option>
+  <option>Carnival Kompa</option>
+</select><br>
+
+<button onclick="generate()">Create Song + Video</button>
+
+<div id="output"></div>
+
 <script>
 function generate() {
 
@@ -32,11 +104,14 @@ function generate() {
     "_blank"
   );
 
-  // Show confirmation on your page
+  // Show confirmation
   document.getElementById("output").innerHTML =
     "<div class='box'>✅ Music + Video tools opened</div>" +
-    "<div class='box'>👉 Your topic: <b>" + topic + "</b></div>" +
+    "<div class='box'>👉 Topic: <b>" + topic + "</b></div>" +
     "<div class='box'>👉 Beat: <b>" + beat + "</b></div>" +
-    "<div class='box'>👉 Suno = paste music prompt<br>👉 Runway = paste video prompt</div>";
+    "<div class='box'>👉 Suno = generate music<br>👉 Runway = generate video</div>";
 }
 </script>
+
+</body>
+</html>
