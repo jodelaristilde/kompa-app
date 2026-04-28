@@ -48,12 +48,12 @@ function generate() {
   let topic = document.getElementById("topic").value;
   let beat = document.getElementById("beat").value;
 
-  document.getElementById("output").innerHTML =
-    "Creating Kompa song and video about: " + topic +
-    "<br>Beat: " + beat +
-    "<br><br>👉 Next step: connect AI APIs (I will help you)";
-}
-</script>
+  let musicPrompt = `Haitian kompa song in Haitian Creole about ${topic}, ${beat}, male and female vocals, live band, modern kompa`;
 
-</body>
-</html>
+  let videoPrompt = `Haitian kompa band performing, 5 male musicians and 1 female singer, song about ${topic}, ${beat}, cinematic lighting, studio performance`;
+
+  document.getElementById("output").innerHTML =
+    "<b>🎵 MUSIC PROMPT:</b><br>" + musicPrompt +
+    "<br><br><b>🎬 VIDEO PROMPT:</b><br>" + videoPrompt +
+    "<br><br>👉 Copy these into AI tools (next step I will automate it)";
+}
